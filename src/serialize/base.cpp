@@ -1,14 +1,21 @@
 #include "serialize/base.hpp"
 
 namespace serialize {
-    Schema::Value::Value(const Schema* schema) : schema_(schema) {}
+    Schema::~Schema() {}
+    std::size_t Schema::alignment() const { return 1; }
 
-    Leaf::Leaf() {}
-    Leaf::~Leaf() {}
-    Leaf::Value::Value(const Schema* schema) : Schema::Value(schema) {}
-    Leaf::Value::~Value() {}
+    Value::~Value() {}
+    Value::Value(const Schema* schema) : schema_(schema) {}
 
-    std::size_t Schema::alignment() const {
-	return 1;
-    }
+    Scalar::Scalar() {}
+    Scalar::~Scalar() {}
+
+    ScalarValue::ScalarValue(const Scalar* schema) : Value(schema) {}
+    ScalarValue::~ScalarValue() {}
+
+    Composite::Composite() {}
+    Composite::~Composite() {}
+
+    CompositeValue::CompositeValue(const Composite* schema) : Value(schema) {}
+    CompositeValue::~CompositeValue() {}
 }

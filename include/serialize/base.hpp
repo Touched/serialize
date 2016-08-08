@@ -3,49 +3,58 @@
 
 #include <cstdint>
 #include "buffer.hpp"
+#include "context.hpp"
 
 namespace serialize {
+    class Schema;
+
+    class Value {
+    public:
+        Value(const Schema* schema);
+        virtual ~Value();
+        virtual std::size_t size() const = 0;
+    protected:
+        const Schema* schema_;
+    };
+
     class Schema {
     public:
-	class Value {
-	public:
-	    Value(const Schema* schema);
-	    virtual std::size_t size() const = 0;
-	protected:
-	    const Schema* schema_;
-	};
+        virtual ~Schema();
 
 	virtual std::size_t alignment() const;
 
-	virtual bool valid(const Value* value) const = 0;
-
-	virtual Value* unpack(const Buffer& begin,
+	virtual Value* unpack(const Buffer& buffer,
 			      std::size_t offset,
-			      const Value* parent=nullptr) const = 0;
+			      Context* context=new Context()) const = 0;
+    };
+
+    class Composite;
+
+    class CompositeValue : public Value {
+    public:
+        CompositeValue(const Composite* schema);
+        virtual ~CompositeValue();
     };
 
     class Composite : public Schema {
     public:
-	class Value : public Schema::Value {
-	public:
-	    Value(const Schema* schema);
-	    virtual ~Value();
-	};
-
 	Composite();
 	virtual ~Composite();
     };
 
-    class Leaf : public Schema {
-    public:
-	class Value : public Schema::Value {
-	public:
-	    Value(const Schema* schema);
-	    virtual ~Value();
-	};
+    class Scalar;
 
-	Leaf();
-	virtual ~Leaf();
+    class ScalarValue : public Value {
+    public:
+        ScalarValue(const Scalar* schema);
+        virtual ~ScalarValue();
+        virtual std::size_t getValue() const = 0;
+    };
+
+    class Scalar : public Schema {
+    public:
+	Scalar();
+	virtual ~Scalar();
     };
 }
 
