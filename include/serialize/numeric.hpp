@@ -6,6 +6,7 @@
 #include <boost/endian/conversion.hpp>
 #include <boost/integer/static_log2.hpp>
 #include "base.hpp"
+#include "visitor.hpp"
 
 namespace serialize {
     template <typename T>
@@ -29,6 +30,10 @@ namespace serialize {
 
         T operator*() const {
             return value_;
+        }
+
+        virtual void accept(ValueVisitor& visitor) {
+            visitor.visit(this);
         }
 
     protected:

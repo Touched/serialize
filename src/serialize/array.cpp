@@ -27,6 +27,14 @@ namespace serialize {
         return values_[index];
     }
 
+    ArrayValue::iterator ArrayValue::begin() {
+        return values_.begin();
+    }
+
+    ArrayValue::iterator ArrayValue::end() {
+        return values_.end();
+    }
+
     Array::Array(Schema* element, Virtual* length)
         : element_(element), length_(length) {}
 

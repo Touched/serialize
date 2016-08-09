@@ -7,12 +7,14 @@
 
 namespace serialize {
     class Schema;
+    class ValueVisitor;
 
     class Value {
     public:
         Value(const Schema* schema);
         virtual ~Value();
         virtual std::size_t size() const = 0;
+        virtual void accept(ValueVisitor& visitor) = 0;
     protected:
         const Schema* schema_;
     };

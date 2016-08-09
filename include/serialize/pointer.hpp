@@ -2,6 +2,7 @@
 #define SERIALIZE_POINTER_HPP_
 
 #include "numeric.hpp"
+#include "visitor.hpp"
 
 namespace serialize {
     class Pointer;
@@ -11,6 +12,10 @@ namespace serialize {
         PointerValue(const Pointer* schema, uint32_t address, Value* wrapped);
         virtual ~PointerValue();
         Value* dereference() const;
+
+        virtual void accept(ValueVisitor& visitor) {
+            visitor.visit(this);
+        }
 
     protected:
         Value* wrapped_;

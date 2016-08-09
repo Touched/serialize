@@ -4,11 +4,29 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
-
+#include <boost/iterator/iterator_adaptor.hpp>
 #include "base.hpp"
+#include "visitor.hpp"
 
 namespace serialize {
     class Structure;
+
+    class StructureIterator
+        : public boost::iterator_adaptor<StructureIterator,
+                                         std::unordered_map<std::string,
+                                                            std::size_t>::const_iterator,
+                                         const std::pair<std::string, Value*>,
+                                         boost::forward_traversal_tag,
+                                         const std::pair<std::string, Value*>
+                                         > {
+    public:
+        StructureIterator(StructureValue* value,
+                          const StructureIterator::iterator_adaptor_::base_type& it);
+        const std::pair<std::string, Value*> dereference() const ;
+    private:
+        friend class boost::iterator_core_access;
+        StructureValue* structure_;
+    };
 
     class StructureValue : public CompositeValue {
     public:
@@ -22,8 +40,16 @@ namespace serialize {
 
         Value* getField(const std::string& key);
 
-        friend Structure;
+        virtual void accept(ValueVisitor& visitor) {
+            visitor.visit(this);
+        }
+
+        StructureIterator begin();
+        StructureIterator end();
+
     protected:
+        friend Structure;
+        friend StructureIterator;
         std::vector<Value*> values_;
         const Structure* structure_;
     };

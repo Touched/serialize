@@ -4,12 +4,15 @@
 #include <vector>
 #include "base.hpp"
 #include "virtual.hpp"
+#include "visitor.hpp"
 
 namespace serialize {
     class Array;
 
     class ArrayValue : public CompositeValue {
     public:
+        typedef std::vector<Value*>::iterator iterator;
+
         ArrayValue(const Array* schema, std::size_t length);
 
         virtual ~ArrayValue();
@@ -19,6 +22,14 @@ namespace serialize {
         void setElement(std::size_t index, Value* value);
 
         Value* getElement(std::size_t index);
+
+        iterator begin();
+
+        iterator end();
+
+        virtual void accept(ValueVisitor& visitor) {
+            visitor.visit(this);
+        }
 
     protected:
         std::vector<Value*> values_;

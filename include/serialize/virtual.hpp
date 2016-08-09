@@ -2,6 +2,7 @@
 #define SERIALIZE_VIRTUAL_HPP_
 
 #include "base.hpp"
+#include "visitor.hpp"
 
 namespace serialize {
     class Virtual;
@@ -12,6 +13,9 @@ namespace serialize {
         virtual ~VirtualValue();
         virtual std::size_t size() const;
         virtual std::size_t getValue() const;
+        virtual void accept(ValueVisitor& visitor) {
+            visitor.visit(this);
+        }
 
     protected:
         const ScalarValue* wrapped_;

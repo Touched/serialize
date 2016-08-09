@@ -2,6 +2,18 @@
 #include "serialize/util.hpp"
 
 namespace serialize {
+    StructureIterator::StructureIterator(StructureValue* value,
+                                         const StructureIterator::iterator_adaptor_::base_type& it)
+        : StructureIterator::iterator_adaptor_(it), structure_(value) {}
+
+    const std::pair<std::string, Value*> StructureIterator::dereference() const {
+        auto key = base()->first;
+        auto index = base()->second;
+        auto value = structure_->values_[index];
+
+        return std::make_pair(key, value);
+    }
+
     StructureValue::StructureValue(const Structure* schema) : CompositeValue(schema) {
         structure_ = dynamic_cast<const Structure*>(schema);
         values_.reserve(structure_->schemas_.size());
@@ -31,6 +43,14 @@ namespace serialize {
     Value* StructureValue::getField(const std::string& key) {
         auto index = structure_->keys_.at(key);
         return values_[index];
+    }
+
+    StructureIterator StructureValue::begin() {
+        return StructureIterator(this, structure_->keys_.cbegin());
+    }
+
+    StructureIterator StructureValue::end() {
+        return StructureIterator(this, structure_->keys_.cend());
     }
 
     Structure::Structure() {}
