@@ -13,11 +13,17 @@ namespace serialize {
     }
 
     std::size_t ArrayValue::size() const {
-        if (values_.size()) {
-            return values_.size() * values_[0]->size();
+        std::size_t size(0);
+
+        if (schema_->dynamic()) {
+            for (const auto& element : values_) {
+                size += element->size();
+            }
         } else {
-            return 0;
+            size = values_.size() * values_.front()->size();
         }
+
+        return size;
     }
 
     void ArrayValue::setElement(std::size_t index, Value* value) {

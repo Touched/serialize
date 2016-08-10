@@ -33,6 +33,7 @@ namespace serialize {
         virtual bool equals(const Value& other) const;
 
         std::list<Value*> values_;
+        const List* list_;
     };
 
     class List : public Composite {
@@ -48,6 +49,8 @@ namespace serialize {
                               Context* context=new Context()) const;
 
     protected:
+        friend ListValue;
+
         Schema* element_;
         Value* sentinel_;
     };

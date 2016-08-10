@@ -3,7 +3,7 @@
 
 namespace serialize {
     ListValue::ListValue(const List* schema)
-        : CompositeValue(schema) {}
+        : CompositeValue(schema), list_(schema) {}
 
     ListValue::~ListValue() {
         for (auto& element : values_) {
@@ -12,12 +12,18 @@ namespace serialize {
     }
 
     std::size_t ListValue::size() const {
-        if (values_.size()) {
-            // Account for sentinel
-            return (values_.size() + 1) * values_.front()->size();
+        // Account for sentinel
+        std::size_t size(list_->sentinel_->size());
+
+        if (schema_->dynamic()) {
+            for (const auto& element : values_) {
+                size += element->size();
+            }
         } else {
-            return values_.size();
+            size = values_.size() * values_.front()->size();
         }
+
+        return size;
     }
 
     void ListValue::pushElement(Value* value) {
