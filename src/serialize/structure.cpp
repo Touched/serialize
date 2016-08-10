@@ -14,10 +14,10 @@ namespace serialize {
         return std::make_pair(key, value);
     }
 
-    StructureValue::StructureValue(const Structure* schema) : CompositeValue(schema) {
-        structure_ = dynamic_cast<const Structure*>(schema);
-        values_.reserve(structure_->schemas_.size());
-    }
+    StructureValue::StructureValue(const Structure* schema)
+        : CompositeValue(schema),
+          structure_(dynamic_cast<const Structure*>(schema)),
+          values_(structure_->schemas_.size(), nullptr) {}
 
     StructureValue::~StructureValue() {
         for (auto& value : values_) {
@@ -51,6 +51,15 @@ namespace serialize {
 
     StructureIterator StructureValue::end() {
         return StructureIterator(this, structure_->keys_.cend());
+    }
+
+    bool StructureValue::equals(const Value& other) const {
+        const auto& structure = static_cast<const StructureValue&>(other);
+
+        return std::equal(values_.begin(),
+                          values_.end(),
+                          structure.values_.begin(),
+                          Value::compare);
     }
 
     Structure::Structure() {}

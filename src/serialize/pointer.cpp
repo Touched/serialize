@@ -12,6 +12,11 @@ namespace serialize {
         return wrapped_;
     }
 
+    bool PointerValue::equals(const Value& other) const {
+        const auto& pointer = static_cast<const PointerValue&>(other);
+        return *pointer.wrapped_ == *wrapped_;
+    }
+
     Pointer::Pointer(Schema* wrapped)
         : wrapped_(wrapped) {}
 

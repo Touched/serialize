@@ -18,6 +18,8 @@ namespace serialize {
         }
 
     protected:
+        virtual bool equals(const Value& other) const;
+
         Value* wrapped_;
     };
 

@@ -3,6 +3,7 @@
 
 namespace serialize {
     class ArrayValue;
+    class ListValue;
     class PointerValue;
     class StructureValue;
     class VirtualValue;
@@ -19,6 +20,7 @@ namespace serialize {
         virtual void visit(NumericValue<uint16_t>*) {}
         virtual void visit(NumericValue<uint32_t>*) {}
         virtual void visit(ArrayValue*) {}
+        virtual void visit(ListValue*) {}
         virtual void visit(PointerValue*) {}
         virtual void visit(StructureValue*) {}
         virtual void visit(VirtualValue*) {}

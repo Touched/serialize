@@ -1,27 +1,25 @@
-#ifndef SERIALIZE_ARRAY_HPP_
-#define SERIALIZE_ARRAY_HPP_
+#ifndef SERIALIZE_LIST_HPP_
+#define SERIALIZE_LIST_HPP_
 
-#include <vector>
+#include <list>
 #include "base.hpp"
 #include "virtual.hpp"
 #include "visitor.hpp"
 
 namespace serialize {
-    class Array;
+    class List;
 
-    class ArrayValue : public CompositeValue {
+    class ListValue : public CompositeValue {
     public:
-        typedef std::vector<Value*>::iterator iterator;
+        typedef std::list<Value*>::iterator iterator;
 
-        ArrayValue(const Array* schema, std::size_t length);
+        ListValue(const List* schema);
 
-        virtual ~ArrayValue();
+        virtual ~ListValue();
 
         virtual std::size_t size() const;
 
-        void setElement(std::size_t index, Value* value);
-
-        Value* getElement(std::size_t index);
+        void pushElement(Value* value);
 
         iterator begin();
 
@@ -33,14 +31,15 @@ namespace serialize {
 
     protected:
         virtual bool equals(const Value& other) const;
-        std::vector<Value*> values_;
+
+        std::list<Value*> values_;
     };
 
-    class Array : public Composite {
+    class List : public Composite {
     public:
-        Array(Schema* element, Virtual* length);
+        List(Schema* element, Value* sentinel);
 
-        virtual ~Array();
+        virtual ~List();
 
         virtual std::size_t alignment() const;
 
@@ -50,8 +49,8 @@ namespace serialize {
 
     protected:
         Schema* element_;
-        Virtual* length_;
+        Value* sentinel_;
     };
 }
 
-#endif /* SERIALIZE_ARRAY_HPP_ */
+#endif /* SERIALIZE_LIST_HPP_ */

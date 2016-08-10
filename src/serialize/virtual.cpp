@@ -16,6 +16,11 @@ namespace serialize {
         return wrapped_->getValue();
     }
 
+    bool VirtualValue::equals(const Value& other) const {
+        const auto& v = static_cast<const VirtualValue&>(other);
+        return *v.wrapped_ == *wrapped_;
+    }
+
     Virtual::Virtual(Scalar* wrapped) : wrapped_(wrapped) {}
 
     Virtual::~Virtual() {

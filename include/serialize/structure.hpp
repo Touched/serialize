@@ -48,10 +48,12 @@ namespace serialize {
         StructureIterator end();
 
     protected:
+        virtual bool equals(const Value& other) const;
+
         friend Structure;
         friend StructureIterator;
-        std::vector<Value*> values_;
         const Structure* structure_;
+        std::vector<Value*> values_;
     };
 
     class Structure : public Composite {

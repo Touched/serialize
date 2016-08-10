@@ -37,6 +37,11 @@ namespace serialize {
         }
 
     protected:
+        virtual bool equals(const Value& other) const {
+            const auto& numeric = static_cast<const NumericValue<T>&>(other);
+            return numeric.value_ == this->value_;
+        }
+
         T value_;
     };
 

@@ -1,6 +1,7 @@
 #ifndef SERIALIZE_BASE_HPP_
 #define SERIALIZE_BASE_HPP_
 
+#include <typeinfo>
 #include <cstdint>
 #include "buffer.hpp"
 #include "context.hpp"
@@ -15,7 +16,22 @@ namespace serialize {
         virtual ~Value();
         virtual std::size_t size() const = 0;
         virtual void accept(ValueVisitor& visitor) = 0;
+
+        bool operator==(const Value& other) const {
+            return typeid(*this) == typeid(other)
+                && schema_ == other.schema_
+                && equals(other);
+        }
+
+        inline bool operator!=(const Value& other) const {
+            return !(*this == other);
+        }
+
+        static inline bool compare(const Value* lhs, const Value* rhs) {
+            return *lhs == *rhs;
+        }
     protected:
+        virtual bool equals(const Value& other) const = 0;
         const Schema* schema_;
     };
 

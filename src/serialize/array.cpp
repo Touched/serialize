@@ -35,6 +35,14 @@ namespace serialize {
         return values_.end();
     }
 
+    bool ArrayValue::equals(const Value& other) const {
+        const auto& array = static_cast<const ArrayValue&>(other);
+        return std::equal(values_.begin(),
+                          values_.end(),
+                          array.values_.begin(),
+                          Value::compare);
+    }
+
     Array::Array(Schema* element, Virtual* length)
         : element_(element), length_(length) {}
 
