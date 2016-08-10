@@ -41,6 +41,11 @@ namespace serialize {
 
 	virtual std::size_t alignment() const;
 
+        /**
+         * Returns true if the type's size can be variable.
+         */
+        virtual bool dynamic() const = 0;
+
 	virtual Value* unpack(const Buffer& buffer,
 			      std::size_t offset,
 			      Context* context=new Context()) const = 0;
@@ -58,6 +63,8 @@ namespace serialize {
     public:
 	Composite();
 	virtual ~Composite();
+
+        virtual bool dynamic() const;
     };
 
     class Scalar;
@@ -73,6 +80,8 @@ namespace serialize {
     public:
 	Scalar();
 	virtual ~Scalar();
+
+        virtual bool dynamic() const;
     };
 }
 

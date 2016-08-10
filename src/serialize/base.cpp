@@ -9,12 +9,18 @@ namespace serialize {
 
     Scalar::Scalar() {}
     Scalar::~Scalar() {}
+    bool Scalar::dynamic() const {
+        return false;
+    }
 
     ScalarValue::ScalarValue(const Scalar* schema) : Value(schema) {}
     ScalarValue::~ScalarValue() {}
 
     Composite::Composite() {}
     Composite::~Composite() {}
+    bool Composite::dynamic() const {
+        return true;
+    }
 
     CompositeValue::CompositeValue(const Composite* schema) : Value(schema) {}
     CompositeValue::~CompositeValue() {}
