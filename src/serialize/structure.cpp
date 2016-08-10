@@ -16,7 +16,7 @@ namespace serialize {
 
     StructureValue::StructureValue(const Structure* schema)
         : CompositeValue(schema),
-          structure_(dynamic_cast<const Structure*>(schema)),
+          structure_(schema),
           values_(structure_->schemas_.size(), nullptr) {}
 
     StructureValue::~StructureValue() {

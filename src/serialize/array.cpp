@@ -3,7 +3,8 @@
 
 namespace serialize {
     ArrayValue::ArrayValue(const Array* schema, std::size_t length)
-        : CompositeValue(schema), values_(length) {}
+        : CompositeValue(schema),
+          values_(length) {}
 
     ArrayValue::~ArrayValue() {
         for (auto& element : values_) {
