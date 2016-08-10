@@ -72,8 +72,11 @@ namespace serialize {
 
         friend StructureValue;
     protected:
+        void calculateAlignment();
+
         std::unordered_map<std::string, std::size_t> keys_;
         std::vector<Schema*> schemas_;
+        std::size_t alignment_;
     };
 }
 

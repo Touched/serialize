@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "serialize/structure.hpp"
 #include "serialize/util.hpp"
 
@@ -71,7 +72,7 @@ namespace serialize {
     }
 
     std::size_t Structure::alignment() const {
-        return schemas_.front()->alignment();
+        return alignment_;
     }
 
     Value* Structure::unpack(const Buffer& buffer,
@@ -105,5 +106,16 @@ namespace serialize {
         schemas_.push_back(valueSchema);
         std::size_t index = schemas_.size() - 1;
         keys_.emplace(std::make_pair(key, index));
+        calculateAlignment();
+    }
+
+    void Structure::calculateAlignment() {
+        auto max = *std::max_element(schemas_.begin(),
+                                     schemas_.end(),
+                                     [](const Schema* a, const Schema* b) {
+                                         return a->alignment() < b->alignment();
+                                     });
+
+        alignment_ = max->alignment();
     }
 }
