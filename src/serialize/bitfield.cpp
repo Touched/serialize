@@ -5,10 +5,9 @@ namespace serialize {
                                          const BitfieldIterator::iterator_adaptor_::base_type& it)
         : BitfieldIterator::iterator_adaptor_(it), bitfield_(value) {}
 
-    const std::pair<std::string, uint32_t> BitfieldIterator::dereference() const {
-        auto key = base()->first;
-        auto index = base()->second;
-        auto value = bitfield_->values_[index];
+    const std::pair<const std::string&, uint32_t> BitfieldIterator::dereference() const {
+        const std::string& key = base()->first;
+        auto value = bitfield_->values_[base()->second];
 
         return std::make_pair(key, value);
     }
