@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
+#include <boost/iterator/iterator_adaptor.hpp>
 #include "base.hpp"
 #include "visitor.hpp"
 
@@ -12,6 +13,23 @@ namespace serialize {
      * Groups of bits packed into a single integer.
      */
     class Bitfield;
+
+    class BitfieldIterator
+        : public boost::iterator_adaptor<BitfieldIterator,
+                                         std::unordered_map<std::string,
+                                                            std::size_t>::const_iterator,
+                                         const std::pair<std::string, uint32_t>,
+                                         boost::forward_traversal_tag,
+                                         const std::pair<std::string, uint32_t>
+                                         > {
+    public:
+        BitfieldIterator(BitfieldValue* value,
+                          const BitfieldIterator::iterator_adaptor_::base_type& it);
+        const std::pair<std::string, uint32_t> dereference() const;
+    private:
+        friend class boost::iterator_core_access;
+        BitfieldValue* bitfield_;
+    };
 
     class BitfieldValue : public ScalarValue {
     public:
@@ -29,7 +47,13 @@ namespace serialize {
 
         virtual void accept(ValueVisitor& visitor);
 
+        BitfieldIterator begin();
+
+        BitfieldIterator end();
+
     protected:
+        friend BitfieldIterator;
+
         virtual bool equals(const Value& other) const;
 
         const Bitfield* bitfield_;

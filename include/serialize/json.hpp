@@ -6,6 +6,7 @@
 #include "array.hpp"
 #include "numeric.hpp"
 #include "pointer.hpp"
+#include "bitfield.hpp"
 
 namespace serialize {
     template <typename Writer>
@@ -41,6 +42,17 @@ namespace serialize {
             }
 
             writer_.EndArray();
+        }
+
+        virtual void visit(BitfieldValue* bitfield) {
+            writer_.StartObject();
+
+            for (const auto& item : *bitfield) {
+                writer_.String(item.first.c_str(), item.first.length());
+                writer_.Uint(item.second);
+            }
+
+            writer_.EndObject();
         }
 
         virtual void visit(StructureValue* structure) {

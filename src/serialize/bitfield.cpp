@@ -1,8 +1,20 @@
 #include "serialize/bitfield.hpp"
 
 namespace serialize {
+    BitfieldIterator::BitfieldIterator(BitfieldValue* value,
+                                         const BitfieldIterator::iterator_adaptor_::base_type& it)
+        : BitfieldIterator::iterator_adaptor_(it), bitfield_(value) {}
+
+    const std::pair<std::string, uint32_t> BitfieldIterator::dereference() const {
+        auto key = base()->first;
+        auto index = base()->second;
+        auto value = bitfield_->values_[index];
+
+        return std::make_pair(key, value);
+    }
+
     BitfieldValue::BitfieldValue(const Bitfield* schema, uint32_t value) :
-        ScalarValue(schema), bitfield_(schema), value_(value), values_(schema->masks_.size()) {
+        ScalarValue(schema), bitfield_(schema), values_(schema->masks_.size()), value_(value) {
 
         for (std::size_t i = 0; i < bitfield_->masks_.size(); ++i) {
             auto& mask = bitfield_->masks_[i];
@@ -41,6 +53,14 @@ namespace serialize {
 
     void BitfieldValue::accept(ValueVisitor& visitor) {
         visitor.visit(this);
+    }
+
+    BitfieldIterator BitfieldValue::begin() {
+        return BitfieldIterator(this, bitfield_->keys_.cbegin());
+    }
+
+    BitfieldIterator BitfieldValue::end() {
+        return BitfieldIterator(this, bitfield_->keys_.cend());
     }
 
     bool BitfieldValue::equals(const Value& other) const {
