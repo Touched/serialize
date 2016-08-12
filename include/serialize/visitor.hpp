@@ -6,6 +6,7 @@ namespace serialize {
     class BitfieldValue;
     class ListValue;
     class PointerValue;
+    class StringValue;
     class StructureValue;
     class VirtualValue;
 
@@ -24,6 +25,7 @@ namespace serialize {
         virtual void visit(BitfieldValue*) {}
         virtual void visit(ListValue*) {}
         virtual void visit(PointerValue*) {}
+        virtual void visit(StringValue*) {}
         virtual void visit(StructureValue*) {}
         virtual void visit(VirtualValue*) {}
     };

@@ -24,4 +24,13 @@ namespace serialize {
 
     CompositeValue::CompositeValue(const Composite* schema) : Value(schema) {}
     CompositeValue::~CompositeValue() {}
+
+    Binary::Binary() {}
+    Binary::~Binary() {}
+    bool Binary::dynamic() const {
+        return true;
+    }
+
+    BinaryValue::BinaryValue(const Binary* schema) : Value(schema) {}
+    BinaryValue::~BinaryValue() {}
 }

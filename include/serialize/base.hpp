@@ -83,6 +83,25 @@ namespace serialize {
 
         virtual bool dynamic() const;
     };
+
+    /**
+     * Binary data.
+     */
+    class Binary;
+
+    class BinaryValue : public Value {
+    public:
+        BinaryValue(const Binary* schema);
+        virtual ~BinaryValue();
+    };
+
+    class Binary : public Schema {
+    public:
+	Binary();
+	virtual ~Binary();
+
+        virtual bool dynamic() const;
+    };
 }
 
 #endif /* SERIALIZE_BASE_HPP_ */
