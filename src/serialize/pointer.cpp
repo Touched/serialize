@@ -39,6 +39,10 @@ namespace serialize {
             address |= *data++ << (i * 8);
         }
 
+        if (address == 0) {
+            return new PointerValue(this, 0, nullptr);
+        }
+
         Memory::Region region = Memory::addressRegion(address);
         if (Memory::isRom(region)) {
             uint32_t pointerAsOffset = address - Memory::regionRange(region).first;

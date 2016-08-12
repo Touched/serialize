@@ -19,7 +19,13 @@ namespace serialize {
         }
 
         virtual void visit(PointerValue* pointer) {
-            pointer->dereference()->accept(*this);
+            Value* wrapped = pointer->dereference();
+
+            if (wrapped) {
+                wrapped->accept(*this);
+            } else {
+                writer_.Null();
+            }
         }
 
         virtual void visit(WordValue* word) {
