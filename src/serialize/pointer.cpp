@@ -1,3 +1,4 @@
+#include "serialize/memory.hpp"
 #include "serialize/pointer.hpp"
 
 namespace serialize {
@@ -38,14 +39,18 @@ namespace serialize {
             address |= *data++ << (i * 8);
         }
 
-        // TODO: Check address is actually in the ROM
-        address -= 0x08000000;
+        Memory::Region region = Memory::addressRegion(address);
+        if (Memory::isRom(region)) {
+            uint32_t pointerAsOffset = address - Memory::regionRange(region).first;
 
-        if (address > buffer.size()) {
-            throw std::out_of_range("Cannot follow pointer: Buffer out of range");
+            if (pointerAsOffset > buffer.size()) {
+                throw std::out_of_range("Cannot follow pointer: Buffer out of range");
+            }
+
+            Value* value = wrapped_->unpack(buffer, pointerAsOffset, context);
+            return new PointerValue(this, address, value);
+        } else {
+            throw std::runtime_error("Address not in the ROM");
         }
-
-        Value* value = wrapped_->unpack(buffer, address, context);
-        return new PointerValue(this, address, value);
     }
 }
