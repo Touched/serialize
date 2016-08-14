@@ -18,14 +18,14 @@ namespace serialize {
         : public boost::iterator_adaptor<BitfieldIterator,
                                          std::unordered_map<std::string,
                                                             std::size_t>::const_iterator,
-                                         const std::pair<const std::string&, uint32_t>,
+                                         const std::pair<std::string, uint32_t>,
                                          boost::forward_traversal_tag,
-                                         const std::pair<const std::string&, uint32_t>
+                                         const std::pair<std::string, uint32_t>
                                          > {
     public:
         BitfieldIterator(BitfieldValue* value,
                           const BitfieldIterator::iterator_adaptor_::base_type& it);
-        const std::pair<const std::string&, uint32_t> dereference() const;
+        const std::pair<std::string, uint32_t> dereference() const;
     private:
         friend class boost::iterator_core_access;
         BitfieldValue* bitfield_;

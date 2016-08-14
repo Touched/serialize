@@ -15,14 +15,14 @@ namespace serialize {
         : public boost::iterator_adaptor<StructureIterator,
                                          std::unordered_map<std::string,
                                                             std::size_t>::const_iterator,
-                                         const std::pair<const std::string&, Value*>,
+                                         const std::pair<std::string, Value*>,
                                          boost::forward_traversal_tag,
-                                         const std::pair<const std::string&, Value*>
+                                         const std::pair<std::string, Value*>
                                          > {
     public:
         StructureIterator(StructureValue* value,
                           const StructureIterator::iterator_adaptor_::base_type& it);
-        const std::pair<const std::string&, Value*> dereference() const ;
+        const std::pair<std::string, Value*> dereference() const ;
     private:
         friend class boost::iterator_core_access;
         StructureValue* structure_;

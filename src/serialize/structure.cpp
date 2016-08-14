@@ -7,9 +7,10 @@ namespace serialize {
                                          const StructureIterator::iterator_adaptor_::base_type& it)
         : StructureIterator::iterator_adaptor_(it), structure_(value) {}
 
-    const std::pair<const std::string&, Value*> StructureIterator::dereference() const {
-        const std::string& key = base()->first;
-        auto value = structure_->values_[base()->second];
+    const std::pair<std::string, Value*> StructureIterator::dereference() const {
+        auto key = base()->first;
+        auto index = base()->second;
+        auto value = structure_->values_[index];
 
         return std::make_pair(key, value);
     }
