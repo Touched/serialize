@@ -31,6 +31,7 @@ namespace serialize {
         Virtual(Scalar* wrapped);
         virtual ~Virtual();
         virtual std::size_t alignment() const;
+        virtual void accept(SchemaVisitor& visitor);
 	virtual Value* unpack(const Buffer& buffer,
                               std::size_t offset,
                               Context* context=new Context()) const;

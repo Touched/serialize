@@ -27,6 +27,7 @@ namespace serialize {
     public:
         Pointer(Schema* wrapped);
         virtual ~Pointer();
+        virtual void accept(SchemaVisitor& visitor);
 	virtual Value* unpack(const Buffer& buffer,
                               std::size_t offset,
                               Context* context=new Context()) const;

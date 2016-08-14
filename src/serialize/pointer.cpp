@@ -25,6 +25,10 @@ namespace serialize {
         delete wrapped_;
     }
 
+    void Pointer::accept(SchemaVisitor& visitor) {
+        visitor.visit(this);
+    }
+
     Value* Pointer::unpack(const Buffer& buffer,
                            std::size_t offset,
                            Context* context) const {

@@ -82,6 +82,10 @@ namespace serialize {
         return 0;
     }
 
+    void String::accept(SchemaVisitor& visitor) {
+        visitor.visit(this);
+    }
+
     Value* String::unpack(const Buffer& buffer, std::size_t offset, Context* context) const {
         std::string result;
         const uint8_t* it;

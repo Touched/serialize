@@ -79,6 +79,10 @@ namespace serialize {
         return alignment_;
     }
 
+    void Bitfield::accept(SchemaVisitor& visitor) {
+        visitor.visit(this);
+    }
+
     Value* Bitfield::unpack(const Buffer& buffer,
                             std::size_t offset,
                             Context* context) const {

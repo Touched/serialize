@@ -61,6 +61,10 @@ namespace serialize {
         return element_->alignment();
     }
 
+    void Array::accept(SchemaVisitor& visitor) {
+        visitor.visit(this);
+    }
+
     Value* Array::unpack(const Buffer& buffer,
                          std::size_t offset,
                          Context* context) const {

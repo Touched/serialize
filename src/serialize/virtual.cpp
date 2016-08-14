@@ -31,6 +31,10 @@ namespace serialize {
         return wrapped_->alignment();
     }
 
+    void Virtual::accept(SchemaVisitor& visitor) {
+        visitor.visit(this);
+    }
+
     Value* Virtual::unpack(const Buffer& buffer,
                            std::size_t offset,
                            Context* context) const {

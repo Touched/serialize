@@ -55,6 +55,10 @@ namespace serialize {
 	    return boost::static_log2<sizeof(T)>::value;
 	}
 
+        virtual void accept(SchemaVisitor& visitor) {
+            visitor.visit(this);
+        }
+
 	virtual Value* unpack(const Buffer& buffer,
                               std::size_t offset,
                               Context* context=new Context()) const {

@@ -75,6 +75,10 @@ namespace serialize {
         return alignment_;
     }
 
+    void Structure::accept(SchemaVisitor& visitor) {
+        visitor.visit(this);
+    }
+
     Value* Structure::unpack(const Buffer& buffer,
                              std::size_t offset,
                              Context* context) const {

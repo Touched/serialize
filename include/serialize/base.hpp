@@ -35,11 +35,15 @@ namespace serialize {
         const Schema* schema_;
     };
 
+    class SchemaVisitor;
+
     class Schema {
     public:
         virtual ~Schema();
 
 	virtual std::size_t alignment() const;
+
+        virtual void accept(SchemaVisitor& visitor) = 0;
 
         /**
          * Returns true if the type's size can be variable.
