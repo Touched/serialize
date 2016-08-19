@@ -75,6 +75,10 @@ namespace serialize {
     private:
         Writer& writer_;
     };
+
+    typedef std::unordered_map<std::string, Schema*> SchemaMapping;
+
+    void load_schemas(std::string json_path, SchemaMapping& schemas);
 }
 
 #endif /* SERIALIZE_JSON_HPP_ */
